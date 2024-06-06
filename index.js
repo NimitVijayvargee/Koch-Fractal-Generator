@@ -70,9 +70,9 @@ class Line {
     }
 
     if(dy < 1){
-    const unitDx = dy / lengthAB;
+    const unitDy = dy / lengthAB;
     }else{
-    const unitDx = -dy / lengthAB;
+    const unitDy = -dy / lengthAB;
     }
     // Point C coordinates
     // Koch curve can be generated upside-down if the signs are switched to negative
