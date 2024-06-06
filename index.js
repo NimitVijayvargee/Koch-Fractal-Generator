@@ -42,7 +42,7 @@ class Line {
     return this.pointB;
   }
 
-  // Point c
+  // Point C
   // This is the midpoint of the line AB
   // It is set at some perpendicular distance R from line AB, this distance is equivalent to the height
   // The height of the equilateral triangle is given by h = (√3/2)AB where AB = length of the line
@@ -63,42 +63,12 @@ class Line {
     // Divided by 3 at the end because the side length of the equilateral triangle is 1/3rd the distance of line AB
 
     // Perpendicular unit vector
-    if(dx < 1){
-    const unitDx = -dx / lengthAB;
-    }else{
-    const unitDx = dx / lengthAB;
-    }
+    const unitDx = -dy / lengthAB;
+    const unitDy = dx / lengthAB;
 
-    if(dy < 1){
-    const unitDy = dy / lengthAB;
-    }else{
-    const unitDy = -dy / lengthAB;
-    }
     // Point C coordinates
-    // Koch curve can be generated upside-down if the signs are switched to negative
-    // const x_C = midX + height * unitDx;
-    // const y_C = midY + height * unitDy;
-
-    // Allows us to generate random koch triangles
-    // const x_C_table = [
-    //   midX + height * unitDx,
-    //   midX + height * (dx > 0 ? unitDx : -unitDx),
-    //   midX + height * (dy > 0 ? unitDx : -unitDx),
-    //   midX + height * (-dy > 0 ? unitDx : -unitDx),
-    //   midX - height * (-dy < 0 ? unitDx : -unitDx),
-    // ];
-    // const x_Y_table = [
-    //   midY + height * unitDy,
-    //   midY + height * (dx > 0 ? unitDy : -unitDy),
-    //   midY + height * (dy > 0 ? unitDy : -unitDy),
-    //   midY + height * (-dy > 0 ? unitDy : -unitDy),
-    //   midY - height * (-dy < 0 ? unitDy : -unitDy),
-    // ];
-
-    // const x_C = x_C_table[kochIndex];
-    // const y_C = x_Y_table[kochIndex];
-      const x_C = midX - height * unitDx;
-      const y_C = midY - height * unitDy;
+    const x_C = midX + height * unitDx;
+    const y_C = midY + height * unitDy;
 
     this.pointC = new Point(x_C, y_C);
     return this.pointC;
@@ -137,7 +107,6 @@ const drawKochCurve = function (width) {
   );
   ctx.beginPath();
 
-  // console.log(lines[0].start[0], lines[0].start[1]);
   ctx.moveTo(lines[0].start[0], lines[0].start[1]);
   ctx.lineTo(lines[0].end[0], lines[0].end[1]);
   ctx.stroke();
@@ -162,109 +131,4 @@ const drawKochCurve = function (width) {
       360
     )
   );
-  ctx.moveTo(lines[2].start[0], lines[1].start[1]);
-  ctx.lineTo(lines[2].end[0], lines[1].end[1]);
-  ctx.stroke();
-
-  linesTracker.push([lines]);
-
-  console.log(kochIndex);
-
-  // for (let i = 0; i < 1; i++) {
-  //   generateKoch();
-  //   generation++;
-  // }
-};
-
-const generateKoch = function () {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.beginPath();
-
-  let epoch = lines.length;
-  const newLines = [];
-
-  for (let i = 0; i < epoch; i++) {
-    // Calculate and return all lines
-    const pointA = lines[i].start;
-    const pointB = lines[i].calculatePointB(lines[i].start, lines[i].end);
-    const pointC = lines[i].calculatePointC(lines[i].start, lines[i].end);
-    const pointD = lines[i].calculatePointD(lines[i].start, lines[i].end);
-    const pointE = lines[i].end;
-    const segLength = lines[i].segLength;
-
-    ctx.moveTo(pointA[0], pointA[1]);
-
-    // Line from A to B
-    ctx.lineTo(pointB.a, pointB.b);
-    newLines.push(
-      new Line([pointA[0], pointA[1]], [pointB.a, pointB.b], segLength / 3)
-    );
-
-    // Line from B to C
-    ctx.lineTo(pointC.a, pointC.b);
-    newLines.push(
-      new Line([pointB.a, pointB.b], [pointC.a, pointC.b], segLength / 3)
-    );
-
-    // Line from C to D
-    ctx.lineTo(pointD.a, pointD.b);
-    newLines.push(
-      new Line([pointC.a, pointC.b], [pointD.a, pointD.b], segLength / 3)
-    );
-
-    // Line from D to E
-    ctx.lineTo(pointE[0], pointE[1]);
-    newLines.push(
-      new Line([pointD.a, pointD.b], [pointE[0], pointE[1]], segLength / 3)
-    );
-
-    // ctx.strokeStyle =
-    // "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0");
-    ctx.stroke();
-  }
-
-  linesTracker.push(new Array(newLines));
-  console.log("lines tracker", linesTracker);
-
-  lines = newLines;
-  console.log(lines);
-  console.log(newLines);
-};
-
-drawKochCurve(360);
-
-kochButton.addEventListener("click", () => {
-  generateKoch();
-  generation++;
-  iterationCount.innerText = `Generation: ${generation}`;
-});
-
-kochResetButton.addEventListener("click", () => {
-  // Clear canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  generation = 0;
-  iterationCount.innerText = `Generation: ${generation}`;
-
-  // Empty the lines array, redraw initial conditions, and randomize the koch index
-  lines = [];
-  linesTracker = [];
-  drawKochCurve(360);
-  kochIndex = Math.floor(Math.random() * (max - min + 1) + min);
-});
-
-kochIterateReverse.addEventListener("click", () => {
-  if (generation > 0) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    generation--;
-    iterationCount.innerText = `Generation: ${generation}`;
-
-    if (generation === 0) {
-      lines = [];
-      linesTracker = [];
-      drawKochCurve(360);
-    } else {
-      lines = [...linesTracker[generation - 1]].flat();
-      generateKoch();
-    }
-  }
-});
+  ctx.moveTo(lines[2].start[0],
