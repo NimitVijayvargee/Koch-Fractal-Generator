@@ -52,8 +52,8 @@ class Line {
     const midY = (a[1] + b[1]) / 2;
 
     // Direction vector
-    const dx = Math.abs(b[0] - a[0]);
-    const dy = -1 * Math.abs(b[1] - a[1]);
+    const dx = b[0] - a[0];
+    const dy = b[1] - a[1];
 
     // Length of AB
     const lengthAB = Math.sqrt(dx * dx + dy * dy);
@@ -63,8 +63,8 @@ class Line {
     // Divided by 3 at the end because the side length of the equilateral triangle is 1/3rd the distance of line AB
 
     // Perpendicular unit vector
-    const unitDx = dy / lengthAB;
-    const unitDy = -dx / lengthAB;
+    const unitDx = Math.abs(b[0] - a[0]);
+    const unitDy = -1 * Math.abs(b[1] - a[1])/lengthAB;
 
     // Point C coordinates
     // Koch curve can be generated upside-down if the signs are switched to negative
