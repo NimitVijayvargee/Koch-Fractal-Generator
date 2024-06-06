@@ -89,10 +89,13 @@ class Line {
 
     // const x_C = x_C_table[kochIndex];
     // const y_C = x_Y_table[kochIndex];
-
-    const x_C = midX + height * unitDx;
-    const y_C = midY + height * unitDy;
-
+    if(dx < 0){
+      const x_C = midX - height * unitDx;
+      const y_C = midY - height * unitDy;
+    }else{
+      const x_C = midX - height * unitDx;
+      const y_C = midY - height * unitDy;
+    }
     this.pointC = new Point(x_C, y_C);
     return this.pointC;
   }
