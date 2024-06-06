@@ -31,21 +31,16 @@ class Line {
     this.segLength = length;
   }
 
-  // Not necessary to calculate point A and E. They are given upon initiation of the Line object
-
   // Point B is 1/3 of the way
   calculatePointB(a, b) {
     this.pointB = new Point(
       (2 / 3) * a[0] + (1 / 3) * b[0],
-      a[1] === b[1] ? b[1] : (2 / 3) * a[1] + (1 / 3) * b[1] // if the points are on the same y-height then keep height the same
+      (2 / 3) * a[1] + (1 / 3) * b[1]
     );
     return this.pointB;
   }
 
   // Point C
-  // This is the midpoint of the line AB
-  // It is set at some perpendicular distance R from line AB, this distance is equivalent to the height
-  // The height of the equilateral triangle is given by h = (√3/2)AB where AB = length of the line
   calculatePointC(a, b) {
     // Midpoint
     const midX = (a[0] + b[0]) / 2;
@@ -59,8 +54,7 @@ class Line {
     const lengthAB = Math.sqrt(dx * dx + dy * dy);
 
     // Height of the triangle
-    const height = (lengthAB * Math.sqrt(3)) / 2 / 3;
-    // Divided by 3 at the end because the side length of the equilateral triangle is 1/3rd the distance of line AB
+    const height = (lengthAB * Math.sqrt(3)) / 6; // Divided by 3 at the end because the side length of the equilateral triangle is 1/3rd the distance of line AB
 
     // Perpendicular unit vector
     const unitDx = -dy / lengthAB;
@@ -74,11 +68,11 @@ class Line {
     return this.pointC;
   }
 
-  // Point D is 2/3rd of the way
+  // Point D is 2/3 of the way
   calculatePointD(a, b) {
     this.pointD = new Point(
       (1 / 3) * a[0] + (2 / 3) * b[0],
-      a[1] === b[1] ? b[1] : (1 / 3) * a[1] + (2 / 3) * b[1] // if the points are on the same y-height then keep height the same
+      (1 / 3) * a[1] + (2 / 3) * b[1]
     );
     return this.pointD;
   }
@@ -115,7 +109,7 @@ const drawKochCurve = function (width) {
   lines.push(
     new Line(
       [c_width / 2 - width / 2, c_height / 2],
-      [c_width / 2, c_height / 2 + (Math.sqrt(3) / 2) * 360],
+      [c_width / 2, c_height / 2 - (Math.sqrt(3) / 2) * 360],
       360
     )
   );
@@ -127,12 +121,12 @@ const drawKochCurve = function (width) {
   lines.push(
     new Line(
       [c_width / 2 + width / 2, c_height / 2],
-      [c_width / 2, c_height / 2 + (Math.sqrt(3) / 2) * 360],
+      [c_width / 2, c_height / 2 - (Math.sqrt(3) / 2) * 360],
       360
     )
   );
-  ctx.moveTo(lines[2].start[0], lines[1].start[1]);
-  ctx.lineTo(lines[2].end[0], lines[1].end[1]);
+  ctx.moveTo(lines[2].start[0], lines[2].start[1]);
+  ctx.lineTo(lines[2].end[0], lines[2].end[1]);
   ctx.stroke();
 
   linesTracker.push([...lines]);
