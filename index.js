@@ -52,8 +52,8 @@ class Line {
     const midY = (a[1] + b[1]) / 2;
 
     // Direction vector
-    const dx = b[0] - a[0];
-    const dy = b[1] - a[1];
+    const dx = Math.abs(b[0] - a[0]);
+    const dy = Math.abs(b[1] - a[1]);
 
     // Length of AB
     const lengthAB = Math.sqrt(dx * dx + dy * dy);
