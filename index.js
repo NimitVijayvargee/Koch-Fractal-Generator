@@ -93,8 +93,8 @@ class Line {
       const x_C = midX - height * unitDx;
       const y_C = midY - height * unitDy;
     }else{
-      const x_C = midX - height * unitDx;
-      const y_C = midY - height * unitDy;
+      const x_C = midX + height * unitDx;
+      const y_C = midY + height * unitDy;
     }
     this.pointC = new Point(x_C, y_C);
     return this.pointC;
