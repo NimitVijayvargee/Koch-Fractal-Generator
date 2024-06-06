@@ -53,7 +53,7 @@ class Line {
 
     // Direction vector
     const dx = Math.abs(b[0] - a[0]);
-    const dy = Math.abs(b[1] - a[1]);
+    const dy = -1 * Math.abs(b[1] - a[1]);
 
     // Length of AB
     const lengthAB = Math.sqrt(dx * dx + dy * dy);
@@ -89,13 +89,9 @@ class Line {
 
     // const x_C = x_C_table[kochIndex];
     // const y_C = x_Y_table[kochIndex];
-    if(dx < 0){
       const x_C = midX - height * unitDx;
       const y_C = midY - height * unitDy;
-    }else{
-      const x_C = midX + height * unitDx;
-      const y_C = midY + height * unitDy;
-    }
+
     this.pointC = new Point(x_C, y_C);
     return this.pointC;
   }
